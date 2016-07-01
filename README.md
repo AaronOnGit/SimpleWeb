@@ -1,6 +1,7 @@
 # SimpleWeb
 It implements register, sign in, sign out, forgot password/reset password, and email send functionalities.
 
+The controller (AccountController) in this project accesses the service layer (/Services/AccountServices)to execute the actions. This approach helps in achieving modularity to a degree in this project.
 
 Getting started: 
 Create an account by clicking on Register link in navigation bar above. 
