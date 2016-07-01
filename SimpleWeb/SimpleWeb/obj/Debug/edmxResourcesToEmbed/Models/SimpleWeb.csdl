@@ -1,0 +1,111 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="SimpleWebModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="Student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Subject_Teacher_Student" Relationship="Self.FK_Subject_Teacher_Student_Student" FromRole="Student" ToRole="Subject_Teacher_Student" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Name" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Subject_Teacher_Student" Relationship="Self.FK_Subject_Teacher_Student_Subject" FromRole="Subject" ToRole="Subject_Teacher_Student" />
+  </EntityType>
+  <EntityType Name="Subject_Teacher_Student">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubjectId" Type="Int32" />
+    <Property Name="TeacherId" Type="Int32" />
+    <Property Name="StudentId" Type="Int32" />
+    <NavigationProperty Name="Student" Relationship="Self.FK_Subject_Teacher_Student_Student" FromRole="Subject_Teacher_Student" ToRole="Student" />
+    <NavigationProperty Name="Subject" Relationship="Self.FK_Subject_Teacher_Student_Subject" FromRole="Subject_Teacher_Student" ToRole="Subject" />
+    <NavigationProperty Name="Teacher" Relationship="Self.FK_Subject_Teacher_Student_Teacher" FromRole="Subject_Teacher_Student" ToRole="Teacher" />
+  </EntityType>
+  <EntityType Name="Teacher">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="FirstName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" MaxLength="200" FixedLength="false" Unicode="true" />
+    <Property Name="Gender" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Subject_Teacher_Student" Relationship="Self.FK_Subject_Teacher_Student_Teacher" FromRole="Teacher" ToRole="Subject_Teacher_Student" />
+  </EntityType>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="Id" />
+    </Key>
+    <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Email" Type="String" MaxLength="100" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="Password" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+    <Property Name="IsActivated" Type="Boolean" Nullable="false" />
+    <Property Name="Token" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" />
+    <Property Name="TokenExpiry" Type="DateTime" Precision="3" />
+    <Property Name="CreatedOn" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="UpdatedOn" Type="DateTime" Precision="3" />
+  </EntityType>
+  <Association Name="FK_Subject_Teacher_Student_Student">
+    <End Role="Student" Type="Self.Student" Multiplicity="0..1" />
+    <End Role="Subject_Teacher_Student" Type="Self.Subject_Teacher_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Student">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Subject_Teacher_Student">
+        <PropertyRef Name="StudentId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subject_Teacher_Student_Subject">
+    <End Role="Subject" Type="Self.Subject" Multiplicity="0..1" />
+    <End Role="Subject_Teacher_Student" Type="Self.Subject_Teacher_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Subject_Teacher_Student">
+        <PropertyRef Name="SubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Subject_Teacher_Student_Teacher">
+    <End Role="Teacher" Type="Self.Teacher" Multiplicity="0..1" />
+    <End Role="Subject_Teacher_Student" Type="Self.Subject_Teacher_Student" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Teacher">
+        <PropertyRef Name="Id" />
+      </Principal>
+      <Dependent Role="Subject_Teacher_Student">
+        <PropertyRef Name="TeacherId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="SimpleWebEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Students" EntityType="Self.Student" />
+    <EntitySet Name="Subjects" EntityType="Self.Subject" />
+    <EntitySet Name="Subject_Teacher_Student" EntityType="Self.Subject_Teacher_Student" />
+    <EntitySet Name="Teachers" EntityType="Self.Teacher" />
+    <EntitySet Name="Users" EntityType="Self.User" />
+    <AssociationSet Name="FK_Subject_Teacher_Student_Student" Association="Self.FK_Subject_Teacher_Student_Student">
+      <End Role="Student" EntitySet="Students" />
+      <End Role="Subject_Teacher_Student" EntitySet="Subject_Teacher_Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subject_Teacher_Student_Subject" Association="Self.FK_Subject_Teacher_Student_Subject">
+      <End Role="Subject" EntitySet="Subjects" />
+      <End Role="Subject_Teacher_Student" EntitySet="Subject_Teacher_Student" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Subject_Teacher_Student_Teacher" Association="Self.FK_Subject_Teacher_Student_Teacher">
+      <End Role="Teacher" EntitySet="Teachers" />
+      <End Role="Subject_Teacher_Student" EntitySet="Subject_Teacher_Student" />
+    </AssociationSet>
+  </EntityContainer>
+</Schema>
