@@ -158,13 +158,7 @@ namespace SimpleWeb.Services
         //Email sending service
         public static void SendEmail(string destination, string subject, string body)
         {
-            //string mailFromAddress = "jinqiaojue@gmail.com";
-            //string mailFromPassword = "ksfhsnrmG5";
-            //string host = "smtp.gmail.com";
-            //int port = 587;
-
             MailMessage msg = new MailMessage();
-            //msg.From = new MailAddress(mailFromAddress);
             msg.To.Add(destination);
             msg.Subject = subject;
             msg.SubjectEncoding = System.Text.Encoding.UTF8;
@@ -172,12 +166,7 @@ namespace SimpleWeb.Services
             msg.BodyEncoding = System.Text.Encoding.UTF8;
             msg.IsBodyHtml = true;
 
-            //SmtpClient Client = new SmtpClient(host, port);
             SmtpClient Client = new SmtpClient();
-            //Client.UseDefaultCredentials = false;
-            //Client.Credentials = new System.Net.NetworkCredential(mailFromAddress, mailFromPassword);
-            //Client.EnableSsl = true;
-            //Client.DeliveryMethod = SmtpDeliveryMethod.Network;
 
             var MailSendingThread = new Thread(() =>
             {
