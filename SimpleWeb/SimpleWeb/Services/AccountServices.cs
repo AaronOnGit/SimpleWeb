@@ -150,6 +150,7 @@ namespace SimpleWeb.Services
                     return false;
                 }
                 user.IsActivated = true;
+                user.TokenExpiry = DateTime.Now;
                 db.SaveChanges();
                 return true;
             }
